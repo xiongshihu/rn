@@ -1,0 +1,22 @@
+dependencies: \
+  /Users/hexiao/node/rn/node_modules/react-native/React/Views/RCTTabBar.m \
+  /Users/hexiao/node/rn/node_modules/react-native/React/Views/RCTTabBar.h \
+  /Users/hexiao/node/rn/node_modules/react-native/React/Base/RCTEventDispatcher.h \
+  /Users/hexiao/node/rn/node_modules/react-native/React/Base/RCTBridge.h \
+  /Users/hexiao/node/rn/node_modules/react-native/React/Base/RCTBridgeDelegate.h \
+  /Users/hexiao/node/rn/node_modules/react-native/React/Base/RCTJavaScriptLoader.h \
+  /Users/hexiao/node/rn/node_modules/react-native/React/Base/RCTBridgeModule.h \
+  /Users/hexiao/node/rn/node_modules/react-native/React/Base/RCTDefines.h \
+  /Users/hexiao/node/rn/node_modules/react-native/React/Base/RCTFrameUpdate.h \
+  /Users/hexiao/node/rn/node_modules/react-native/React/Base/RCTInvalidating.h \
+  /Users/hexiao/node/rn/node_modules/react-native/React/Base/RCTLog.h \
+  /Users/hexiao/node/rn/node_modules/react-native/React/Base/RCTAssert.h \
+  /Users/hexiao/node/rn/node_modules/react-native/React/Views/RCTTabBarItem.h \
+  /Users/hexiao/node/rn/node_modules/react-native/React/Views/RCTComponent.h \
+  /Users/hexiao/node/rn/node_modules/react-native/React/Base/RCTUtils.h \
+  /Users/hexiao/node/rn/node_modules/react-native/React/Views/RCTView.h \
+  /Users/hexiao/node/rn/node_modules/react-native/React/Views/RCTBorderStyle.h \
+  /Users/hexiao/node/rn/node_modules/react-native/React/Views/RCTPointerEvents.h \
+  /Users/hexiao/node/rn/node_modules/react-native/React/Views/RCTViewControllerProtocol.h \
+  /Users/hexiao/node/rn/node_modules/react-native/React/Views/RCTWrapperViewController.h \
+  /Users/hexiao/node/rn/node_modules/react-native/React/Views/UIView+React.h

@@ -1,0 +1,7 @@
+dependencies: \
+  /Users/hexiao/node/rn/node_modules/react-native/React/Views/RCTRefreshControl.m \
+  /Users/hexiao/node/rn/node_modules/react-native/React/Views/RCTRefreshControl.h \
+  /Users/hexiao/node/rn/node_modules/react-native/React/Views/RCTComponent.h \
+  /Users/hexiao/node/rn/node_modules/react-native/React/Base/RCTUtils.h \
+  /Users/hexiao/node/rn/node_modules/react-native/React/Base/RCTAssert.h \
+  /Users/hexiao/node/rn/node_modules/react-native/React/Base/RCTDefines.h
