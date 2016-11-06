@@ -1,12 +1,16 @@
+'use strict';
+
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from './actions';
 import { is } from 'immutable';
 import {
-  NavigatorIOS
+  Navigator,
+  View
 } from 'react-native';
 
+import AlertComponent from './components/AlertComponent';
 import LoginView from './views/login.view';
 
 class App extends Component {
@@ -28,16 +32,34 @@ class App extends Component {
     return false;
   }
   render() {
+    const { store, actions } = this.props;
+    const globalStore = store.global.toJS();
 		return (
-      <NavigatorIOS
-        initialRoute={{
-          component: LoginView,
-          title: 'My Initial Scene',
-          passProps: {
-            ...this.props
-          }
+      <Navigator
+        initialRoute={{ title: 'My Initial Scene', index: 0 }}
+        renderScene={(route, navigator) => {
+          return (
+            <View style={{flex: 1}}>
+              <LoginView
+                {...this.props}
+                title={route.title}
+                onForward={ () => {
+                  const nextIndex = route.index + 1;
+                  navigator.push({
+                    title: 'Scene ' + nextIndex,
+                    index: nextIndex,
+                  });
+                }}
+                onBack={() => {
+                  if (route.index > 0) {
+                    navigator.pop();
+                  }
+                }}
+              />
+              <AlertComponent actions={actions} alertInfo={globalStore.alert} />
+            </View>
+          )
         }}
-        style={{flex: 1}}
       />
     );
   }

@@ -1,3 +1,5 @@
+'use strict';
+
 import React,{
     NetInfo
 } from 'react-native';

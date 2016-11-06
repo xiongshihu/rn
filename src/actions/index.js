@@ -1,5 +1,9 @@
-import * as test from './test.action';
+'use strict';
+
+import * as auth from './auth.action';
+import * as global from './global.action';
 
 export default {
-  ...test
+  ...auth,
+  ...global
 }

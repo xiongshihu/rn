@@ -1,3 +1,5 @@
+'use strict';
+
 import { createStore, compose, applyMiddleware } from 'redux';
 import reactThunk from 'redux-thunk';
 import createLogger from 'redux-logger';

@@ -1,3 +1,5 @@
+'use strict';
+
 import React, { Component, PropTypes } from 'react';
 import { is } from 'immutable';
 import {
@@ -8,11 +10,12 @@ import {
 } from 'react-native';
 import styles from './style';
 import Icon from 'react-native-vector-icons/Ionicons';
+import TouchableButton from '../../components/TouchableButton';
 
 class LoginView extends Component {
   constructor (props) {
     super(props);
-    this.handleFetch = this.handleFetch.bind(this);
+    this.handleLogin = this.handleLogin.bind(this);
   }
   shouldComponentUpdate(nextProps, nextState) {
     const thisProps = this.props || {}, thisState = this.state || {};
@@ -30,46 +33,49 @@ class LoginView extends Component {
   }
   render() {
     const { store, actions } = this.props;
-    console.log(1111);
+    const authStore = store.auth.toJS();
 		return (
       <View style={styles.container}>
-        <View style={styles.iptItem}>
-          <Icon style={styles.iptIcon} name="ios-person" size={30} color="#4F8EF7" />
-          <TextInput
-            style={styles.ipt}
-            style={{height: 40}}
-            placeholder="用户名"
-            value={store.test.get('testInfo')}
-            onChangeText={(text) => actions.handleTest(text)}
-          />
+        <View style={styles.wrap}>
+          <View style={styles.iptItem}>
+            <Icon style={styles.iptIcon} name="ios-person" size={30} color="#4F8EF7" />
+            <TextInput
+              style={styles.ipt}
+              placeholder="用户名"
+              value={authStore.loginName}
+              onChangeText={(text) => actions.authSetName(text)}
+            />
+          </View>
+          <View style={styles.iptItem}>
+            <Icon style={styles.iptIcon} name="ios-lock" size={30} color="#4F8EF7" />
+            <TextInput
+              style={styles.ipt}
+              placeholder="密码"
+              value={authStore.loginPassword}
+              onChangeText={(text) => actions.authSetPwd(text)}
+            />
+          </View>
+          <View style={styles.iptItem}>
+            <TouchableButton
+              style={{}}
+              onPress={this.handleLogin}
+              Text="登录"
+            />
+          </View>
+          <View style={styles.copyrightWrap}>
+            <Text style={styles.copyright}>
+              hexiao-o & 20161106
+            </Text>
+          </View>
         </View>
-        <View style={styles.iptItem}>
-          <Icon style={styles.iptIcon} name="ios-lock" size={30} color="#4F8EF7" />
-          <TextInput
-            style={styles.ipt}
-            style={{height: 40}}
-            placeholder="密码"
-            value={store.test.get('testInfo')}
-            onChangeText={(text) => actions.handleTest(text)}
-          />
-        </View>
-        <View style={styles.iptItem}>
-          <TouchableHighlight onPress={this.handleFetch}>
-            <View>
-              <Icon name="ios-log-in" size={30} color="#4F8EF7" />
-              <Text>登陆</Text>
-            </View>
-          </TouchableHighlight>
-        </View>
-        <Text style={styles.copyright}>
-          {store.test.get('testInfo') || 'Welcome to React Native!'}
-        </Text>
       </View>
     );
   }
-  handleFetch() {
-    const { handleTest, handleFetch } =this.props.actions;
-    handleFetch(`测试数据: ${(new Date).getTime()}`);
+  handleLogin() {
+    const { authLogin } =this.props.actions;
+    authLogin({
+
+    });
   }
 }
 

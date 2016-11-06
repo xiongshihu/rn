@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * 基于 fetch 封装的 GET请求
  * @param url
