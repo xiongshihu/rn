@@ -6,26 +6,41 @@ import {
 
 export default StyleSheet.create({
   container: {
+    flex: 1
+  },
+  header: {
+    margin: 0,
+    height: 60,
+    backgroundColor: 'red'
+  },
+  main: {
     flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    flexGrow: 1
   },
-  iptItem: {
-
+  list: {
+    flex: 1,
+    marginTop: 20,
+    marginLeft: 10,
+    marginRight: 10,
+    backgroundColor: '#eee',
+    flexDirection: 'row'
   },
-  iptIcon: {
-
+  itemImages: {
+    position: 'relative',
+    width: 80,
+    height: 80
   },
-  ipt: {
-
+  itemLogo: {
+    position: 'absolute',
+    top: 10,
+    left: 10,
+    width: 60,
+    height: 60,
+    borderRadius: 10,
   },
-  copyright: {
-    fontSize: 12,
-    textAlign: 'center',
-    margin: 10,
-    color: '#666',
-    alignSelf: 'flex-end'
+  item: {
+    flex: 1,
+    padding: 10,
+    height: 80
   }
 });

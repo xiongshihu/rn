@@ -35,7 +35,6 @@ class AlertComponent extends Component {
     );
   }
   handleShow(nextProps) {
-    console.log(nextProps);
     const { alertInfo, actions } = nextProps;
     if (alertInfo.title) {
       Alert.alert(

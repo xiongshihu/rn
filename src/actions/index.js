@@ -1,9 +1,11 @@
 'use strict';
 
-import * as auth from './auth.action';
 import * as global from './global.action';
+import * as auth from './auth.action';
+import * as main from './main.action';
 
 export default {
+  ...global,
   ...auth,
-  ...global
+  ...main
 }

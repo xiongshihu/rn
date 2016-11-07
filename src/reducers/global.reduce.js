@@ -2,16 +2,16 @@
 
 import { createReducer } from 'redux-immutablejs';
 import { fromJS } from 'immutable';
+import routes from '../routes';
 import TYPE from '../constants';
 const { GLOBAL } = TYPE;
 const initialState = fromJS({
+  history: [],
+  routes,
   alert: {
     title: '',
     message: '',
-    buttons: [{
-      text: '确定',
-      onPress: () => {}
-    }],
+    buttons: [],
     type: ''
   }
 });
@@ -29,5 +29,11 @@ export default createReducer(initialState, {
         type: ''
       }
     })
+  },
+  [GLOBAL.GLOBAL_ROUTE_CHANGE]: (state, action) => {
+    const history = state.get('history');
+    history.push(action.route);
+    const tmpState = state.setIn(['history'], history);
+    return tmpState;
   }
 });

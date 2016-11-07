@@ -5,7 +5,7 @@
  * @param url
  * @returns {Promise}
  */
-function R_GET(url, params = {}) {
+function R_GET(url, params = {}, token) {
   if (params) {
     let paramsArray = []
     Object.keys(params).forEach(key => paramsArray.push(key + '=' + encodeURIComponent(params[key])))
@@ -16,7 +16,12 @@ function R_GET(url, params = {}) {
     }
   }
   return new Promise(function (resolve, reject) {
-    fetch(url)
+    fetch(url, {
+      'credentials': 'include',
+      'headers': {
+        'Cookie': token
+      }
+    })
     .then((response) => {
       if (response.ok) {
           return response.json()
@@ -42,13 +47,15 @@ function R_GET(url, params = {}) {
  * @param url
  * @returns {Promise}
  */
-function R_POST(url, params) {
+function R_POST(url, params, token) {
   return new Promise(function (resolve, reject) {
     fetch(url, {
       method: 'post',
       headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
+        'credentials': 'include',
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Cookie': token
       },
       body: JSON.stringify(params)
     })
@@ -76,9 +83,11 @@ function createCatFetchMiddleware(extraArgument) {
   return ({ dispatch, getState }) => next => action => {
     const { type, catFetch, catMethod = 'GET', catParams, callback } = action;
     if (catFetch && catMethod) {
+      console.log(type, catFetch, catMethod);
       dispatch({ type });
+      const token = getState().auth.toJS().user.token;
       if (catMethod === 'GET') {
-        return R_GET(catFetch, catParams)
+        return R_GET(catFetch, catParams, token)
                .then((data) => {
                  if (typeof callback === 'function') {
                   callback(null, data, dispatch, getState)
@@ -89,7 +98,7 @@ function createCatFetchMiddleware(extraArgument) {
                });
       }
       if (catMethod === 'POST') {
-        return R_POST(catFetch, catParams)
+        return R_POST(catFetch, catParams, token)
         .then((data) => {
           if (typeof callback === 'function') {
            callback(null, data, dispatch, getState)

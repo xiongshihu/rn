@@ -28,7 +28,7 @@ class TouchableButton extends Component {
     return false;
   }
   render() {
-    console.log(this.props);
+    const Icon = this.props.icon;
     return (
         <TouchableHighlight
           underlayColor={this.props.underlayColor}
@@ -37,7 +37,7 @@ class TouchableButton extends Component {
           onPress={this.props.onPress}
         >
           <View>
-            <Icon name="ios-log-in" size={30} color="#4F8EF7" />
+            {Icon ? Icon : null}
             <Text style={{fontSize:16,color:'#fff'}}>{this.props.text}</Text>
           </View>
         </TouchableHighlight>

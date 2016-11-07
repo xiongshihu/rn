@@ -11,11 +11,14 @@ import {
 } from 'react-native';
 
 import AlertComponent from './components/AlertComponent';
-import LoginView from './views/login.view';
+import Loading from './components/Loading';
 
 class App extends Component {
   constructor (props) {
     super(props);
+    this.configureScene = this.configureScene.bind(this);
+    this.renderScene = this.renderScene.bind(this);
+    this.handerDidFocus = this.handerDidFocus.bind(this);
   }
   shouldComponentUpdate(nextProps, nextState) {
     const thisProps = this.props || {}, thisState = this.state || {};
@@ -34,34 +37,46 @@ class App extends Component {
   render() {
     const { store, actions } = this.props;
     const globalStore = store.global.toJS();
+    const authStore = store.auth.toJS();
+    // 初始路由
+    const initialRoute = {
+      render: globalStore.routes.LoginView
+    }
+    // 判断是否登录
+    if (authStore.user.isLogin) {
+      initialRoute.render = globalStore.routes.IndexView;
+    }
 		return (
-      <Navigator
-        initialRoute={{ title: 'My Initial Scene', index: 0 }}
-        renderScene={(route, navigator) => {
-          return (
-            <View style={{flex: 1}}>
-              <LoginView
-                {...this.props}
-                title={route.title}
-                onForward={ () => {
-                  const nextIndex = route.index + 1;
-                  navigator.push({
-                    title: 'Scene ' + nextIndex,
-                    index: nextIndex,
-                  });
-                }}
-                onBack={() => {
-                  if (route.index > 0) {
-                    navigator.pop();
-                  }
-                }}
-              />
-              <AlertComponent actions={actions} alertInfo={globalStore.alert} />
-            </View>
-          )
-        }}
-      />
+      <View style={{flex: 1}}>
+        <Navigator
+          style={{flex:1}}
+          initialRoute={initialRoute}
+          configureScene={this.configureScene}
+          renderScene={this.renderScene}
+          onDidFocus={this.handerDidFocus}
+        />
+        <AlertComponent actions={actions} alertInfo={globalStore.alert} />
+      </View>
     );
+  }
+  configureScene(route, routeStack) {
+   if (route.type == 'Bottom') {
+     return Navigator.SceneConfigs.FloatFromBottom; // 底部弹出
+   }
+   return Navigator.SceneConfigs.PushFromRight; // 右侧弹出
+  }
+  renderScene(route, navigator) {
+    const { store, actions } = this.props;
+    return (<route.render.component
+              navigator={navigator}
+              store={store}
+              actions={actions}
+              {...route.passProps}
+             />);
+  }
+  handerDidFocus(route) {
+    const { actions } = this.props;
+    actions.globalRouteChange(route);
   }
 }
 

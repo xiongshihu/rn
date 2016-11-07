@@ -33,3 +33,14 @@ export function globalAlertClean() {
     type: GLOBAL.GLOBAL_ALERT_CLEAN
   }
 }
+
+/**
+ * [globalAlertClean 清楚alert信息]
+ * @return {[type]}        [description]
+ */
+export function globalRouteChange(route) {
+  return {
+    type: GLOBAL.GLOBAL_ROUTE_CHANGE,
+    route
+  }
+}

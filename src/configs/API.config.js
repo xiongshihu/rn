@@ -1,6 +1,10 @@
 'use strict';
+// 开发接口host
+const devHost = 'http://localhost:5000/api/mock/';
+// 生产接口host
+const proHost = 'https://toolchain.camera360.com/';
 
-const host = 'http://toolchain.camera360.com/';
+const host = proHost;
 
 export default {
   host: host,
@@ -11,7 +15,7 @@ export default {
   },
   login: {
     name: '登录接口',
-    method: 'POST',
+    method: 'GET',
     url: `${host}apollo/listModule`
   }
 };

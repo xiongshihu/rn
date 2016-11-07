@@ -58,6 +58,7 @@ class LoginView extends Component {
           <View style={styles.iptItem}>
             <TouchableButton
               style={{}}
+              icon={<Icon name="ios-log-in" size={30} color="#4F8EF7" />}
               onPress={this.handleLogin}
               Text="登录"
             />
@@ -67,6 +68,12 @@ class LoginView extends Component {
               hexiao-o & 20161106
             </Text>
           </View>
+          <TouchableButton
+            style={{}}
+            icon={<Icon name="ios-arrow-back-outline" size={30} color="#4F8EF7" />}
+            onPress={()=>this.props.navigator.pop()}
+            Text="返回上一页"
+          />
         </View>
       </View>
     );
@@ -81,7 +88,8 @@ class LoginView extends Component {
 
 LoginView.propTypes = {
   store: PropTypes.object.isRequired,
-  actions: PropTypes.object.isRequired
+  actions: PropTypes.object.isRequired,
+  navigator: PropTypes.object.isRequired
 };
 
 export default LoginView;
