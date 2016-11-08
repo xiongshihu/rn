@@ -4,7 +4,7 @@ import React, { Component, PropTypes } from 'react';
 import {
   View,
   Text,
-  TouchableHighlight
+  TouchableOpacity
 } from 'react-native';
 import styles from './style.js'
 
@@ -16,27 +16,33 @@ class Header extends Component {
      return (
        <View style={styles.container}>
         <View style={styles.headLeft}>
-          <TouchableHighlight
-            underlayColor={this.props.underlayColor}
-            activeOpacity={0.5}
-            onPress={this.props.leftOnPress}
-          >
-            <View>
-              {this.props.leftContent}
-            </View>
-          </TouchableHighlight>
+          {
+            this.props.leftContent ? (
+              <TouchableOpacity
+                underlayColor='transparent'
+                onPress={this.props.leftOnPress}
+              >
+                <View>
+                  {this.props.leftContent}
+                </View>
+              </TouchableOpacity>
+            ) : null
+          }
         </View>
         <View style={styles.headContent}>
           <Text style={styles.headTitle}>{this.props.TitleContent}</Text>
         </View>
         <View style={styles.headRight}>
-          <TouchableHighlight
-            underlayColor={this.props.underlayColor}
-            activeOpacity={0.5}
-            onPress={this.props.rightOnPress}
-          >
-            {this.props.rightContent}
-          </TouchableHighlight>
+          {
+            this.props.rightContent ? (
+              <TouchableOpacity
+                underlayColor='transparent'
+                onPress={this.props.rightOnPress}
+              >
+                {this.props.rightContent}
+              </TouchableOpacity>
+            ) : null
+          }
         </View>
        </View>
      );

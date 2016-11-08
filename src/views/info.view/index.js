@@ -18,7 +18,7 @@ class IndexView extends Component {
   constructor (props) {
     super(props);
     this._navigate = this._navigate.bind(this);
-    this.renderList = this.renderList.bind(this);
+    this.renderInfo = this.renderInfo.bind(this);
   }
   shouldComponentUpdate(nextProps, nextState) {
     const thisProps = this.props || {}, thisState = this.state || {};
@@ -36,77 +36,47 @@ class IndexView extends Component {
   }
   componentDidMount() {
     const { store, actions } = this.props;
-    actions.mainGetList({});
+
   }
   render() {
     const { store, actions, navigator } = this.props;
     const globalStore = store.global.toJS();
     const mainStore = store.main.toJS();
-    console.log(globalStore);
+    console.log(this.props);
 		return (
       <View style={styles.container}>
         <View style={styles.header}>
           <Header
+            leftContent={<Icon style={{textAlign: 'center'}} name="ios-arrow-back" size={30} color="#fff" />}
+            leftOnPress = { () => navigator.pop()}
             rightContent={<Icon style={{textAlign: 'center'}} name="md-settings" size={30} color="#fff" />}
             rightOnPress = { () => this._navigate(globalStore.routes.LoginView) }
-            TitleContent={'首页'}
+            TitleContent={this.props.info.show || '祥情页'}
           />
         </View>
         <View style={styles.main}>
           <ScrollView>
-          {this.renderList(mainStore.index.list)}
+          {this.renderInfo(this.props.info)}
           </ScrollView>
         </View>
       </View>
     );
   }
-  renderList(list) {
-    const { store } = this.props;
-    const globalStore = store.global.toJS();
-    if (!list.length) return false;
-    return list.map((item, index) => {
-      const logoUrl = item.logoUrl.substring(0, item.logoUrl.indexOf('?'));
-      const recent = item.recent[0] || {};
-      let log = '';
-      if (recent.log) {
-        log = recent.log[0];
-      }
-      return (
-        <TouchableOpacity
-          key={`list-${index}`}
-          underlayColor='transparent'
-          onPress={() => this._navigate(globalStore.routes.InfoView, 'Normal', {info: item})}
-        >
-          <View >
-            <View style={styles.list}>
-              <View style={styles.itemImages}>
-                <Image source={{uri: `${logoUrl}?imageView2/1/w/192/h/192`}}
-                  style={styles.itemLogo}
-                />
-              </View>
-              <View style={styles.item}>
-                {item.show ? <Text>{item.show}</Text> : null}
-                {item.desc ? <Text>{item.desc}</Text> : null}
-                {item.compileCount ? <Text>{`历史编辑: ${item.compileCount}`}</Text> : null}
-              </View>
-            </View>
-            {
-              recent.commitTime || recent.log ? (
-                <View style={styles.listMsg}>
-                  <Text>{`[${moment(recent.commitTime).month(1).format("YY-MM-DD hh:mm")}] ${log}`}</Text>
-                </View>
-              ) : null
-            }
-          </View>
-        </TouchableOpacity>
+  renderInfo(info) {
+    console.log(info);
+    if (!info) return false;
+    return (
+        <View>
+
+        </View>
       );
-    });
   }
-  _navigate(page, type = 'Bottom', passProps) {
+  _navigate(page, type = 'Bottom') {
     const { store, actions, navigator } = this.props;
+    console.log(page);
     this.props.navigator.push({
       render: page,
-      passProps: passProps,
+      passProps: {},
       type: type
     })
   }
