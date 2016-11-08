@@ -30,7 +30,9 @@ class Header extends Component {
           }
         </View>
         <View style={styles.headContent}>
-          <Text style={styles.headTitle}>{this.props.TitleContent}</Text>
+          {this.props.TitleContent ? (
+            <Text style={styles.headTitle}>{this.props.TitleContent}</Text>
+          ) : null}
         </View>
         <View style={styles.headRight}>
           {

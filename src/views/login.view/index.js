@@ -6,15 +6,18 @@ import {
   Text,
   View,
   TextInput,
+  Image,
   TouchableHighlight
 } from 'react-native';
 import styles from './style';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Header from '../../components/Header';
 import TouchableButton from '../../components/TouchableButton';
 
 class LoginView extends Component {
   constructor (props) {
     super(props);
+    this._navigate = this._navigate.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
   }
   shouldComponentUpdate(nextProps, nextState) {
@@ -32,10 +35,17 @@ class LoginView extends Component {
     return false;
   }
   render() {
-    const { store, actions } = this.props;
+    const { store, actions, navigator } = this.props;
     const authStore = store.auth.toJS();
 		return (
       <View style={styles.container}>
+        <Image source={require('./images/mobile-login.jpg')}
+          style={styles.backgroundImage}
+        >
+        <Header
+          leftContent={<Icon style={{textAlign: 'center', backgroundColor: 'transparent'}} name="ios-arrow-back" size={30} color="#ccc" />}
+          leftOnPress = { () => navigator.pop()}
+        />
         <View style={styles.wrap}>
           <View style={styles.iptItem}>
             <View style={styles.iptIcon}>
@@ -44,6 +54,8 @@ class LoginView extends Component {
             <TextInput
               style={styles.ipt}
               placeholder="用户名"
+              clearButtonMode="always"
+              placeholderTextColor="#fff"
               value={authStore.loginName}
               onChangeText={(text) => actions.authSetName(text)}
             />
@@ -55,6 +67,9 @@ class LoginView extends Component {
             <TextInput
               style={styles.ipt}
               placeholder="密码"
+              secureTextEntry={true}
+              clearButtonMode="always"
+              placeholderTextColor="#fff"
               value={authStore.loginPassword}
               onChangeText={(text) => actions.authSetPwd(text)}
             />
@@ -67,20 +82,18 @@ class LoginView extends Component {
               Text="登录"
             />
           </View>
-          <View style={styles.copyrightWrap}>
-            <Text style={styles.copyright}>
-              hexiao-o & 20161106
-            </Text>
-          </View>
-          <TouchableButton
-            style={{}}
-            icon={<Icon name="ios-arrow-back-outline" size={30} color="#4F8EF7" />}
-            onPress={()=>this.props.navigator.pop()}
-            Text="返回上一页"
-          />
         </View>
+        </Image>
       </View>
     );
+  }
+  _navigate(page, type = 'Bottom', passProps) {
+    const { store, actions, navigator } = this.props;
+    this.props.navigator.push({
+      render: page,
+      passProps: passProps,
+      type: type
+    })
   }
   handleLogin() {
     const { authLogin } =this.props.actions;

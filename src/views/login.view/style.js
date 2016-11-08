@@ -11,6 +11,11 @@ export default StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#F5FCFF'
   },
+  backgroundImage: {
+    flex: 1,
+    width: null,
+    height: null
+  },
   wrap: {
     flex: 1,
     justifyContent: 'center',
@@ -26,11 +31,11 @@ export default StyleSheet.create({
     marginLeft: 0,
     borderRadius: 6,
     overflow: 'hidden',
-    backgroundColor: 'rgba(0,0,0,.2)'
+    backgroundColor: 'rgba(0,0,0,.3)'
   },
   icon: {
     textAlign: 'center',
-    color: "#4F8EF7"
+    color: "#fff"
   },
   iptIcon: {
     justifyContent: 'center',
@@ -40,6 +45,7 @@ export default StyleSheet.create({
   ipt: {
     flex: 1,
     height: 50,
+    color: '#fff'
   },
   copyrightWrap: {
     marginLeft: 10,

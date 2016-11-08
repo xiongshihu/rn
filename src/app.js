@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux';
 import * as actions from './actions';
 import { is } from 'immutable';
 import {
+  StatusBar,
   Navigator,
   View
 } from 'react-native';
@@ -48,6 +49,9 @@ class App extends Component {
     }
 		return (
       <View style={{flex: 1}}>
+        <StatusBar
+          barStyle="light-content"
+        />
         <Navigator
           style={{flex:1}}
           initialRoute={initialRoute}
@@ -75,8 +79,8 @@ class App extends Component {
              />);
   }
   handerDidFocus(route) {
-    const { actions } = this.props;
-    actions.globalRouteChange(route);
+    // const { actions } = this.props;
+    // actions.globalRouteChange(route);
   }
 }
 

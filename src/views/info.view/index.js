@@ -65,9 +65,21 @@ class IndexView extends Component {
   renderInfo(info) {
     console.log(info);
     if (!info) return false;
+    const logoUrl = info.logoUrl.substring(0, info.logoUrl.indexOf('?'));
     return (
         <View>
-
+          <View style={styles.list}>
+            <View style={styles.itemImages}>
+              <Image source={{uri: `${logoUrl}?imageView2/1/w/192/h/192`}}
+                style={styles.itemLogo}
+              />
+            </View>
+            <View style={styles.item}>
+              {info.show ? <Text>{info.show}</Text> : null}
+              {info.desc ? <Text>{info.desc}</Text> : null}
+              {info.compileCount ? <Text>{`历史编辑: ${info.compileCount}`}</Text> : null}
+            </View>
+          </View>
         </View>
       );
   }
