@@ -12,6 +12,7 @@ export default StyleSheet.create({
   },
   headLeft: {
     width: 50,
+    height: 40,
     justifyContent: 'center'
   },
   headContent: {

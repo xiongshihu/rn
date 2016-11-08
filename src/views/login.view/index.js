@@ -38,7 +38,9 @@ class LoginView extends Component {
       <View style={styles.container}>
         <View style={styles.wrap}>
           <View style={styles.iptItem}>
-            <Icon style={styles.iptIcon} name="ios-person" size={30} color="#4F8EF7" />
+            <View style={styles.iptIcon}>
+              <Icon style={styles.icon} name="ios-person" size={30} />
+            </View>
             <TextInput
               style={styles.ipt}
               placeholder="用户名"
@@ -47,7 +49,9 @@ class LoginView extends Component {
             />
           </View>
           <View style={styles.iptItem}>
-            <Icon style={styles.iptIcon} name="ios-lock" size={30} color="#4F8EF7" />
+            <View style={styles.iptIcon}>
+              <Icon style={styles.icon} name="ios-lock" size={30} />
+            </View>
             <TextInput
               style={styles.ipt}
               placeholder="密码"

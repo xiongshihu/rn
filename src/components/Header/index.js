@@ -19,8 +19,7 @@ class Header extends Component {
           <TouchableHighlight
             underlayColor={this.props.underlayColor}
             activeOpacity={0.5}
-            style={this.props.style}
-            onPress={this.props.onPress}
+            onPress={this.props.leftOnPress}
           >
             <View>
               {this.props.leftContent}
@@ -31,7 +30,13 @@ class Header extends Component {
           <Text style={styles.headTitle}>{this.props.TitleContent}</Text>
         </View>
         <View style={styles.headRight}>
-          {this.props.RightContent}
+          <TouchableHighlight
+            underlayColor={this.props.underlayColor}
+            activeOpacity={0.5}
+            onPress={this.props.rightOnPress}
+          >
+            {this.props.rightContent}
+          </TouchableHighlight>
         </View>
        </View>
      );

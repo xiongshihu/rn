@@ -2,6 +2,7 @@
 
 import React, { Component, PropTypes } from 'react';
 import { is } from 'immutable';
+import moment from 'moment';
 import {
   Image,
   Text,
@@ -41,12 +42,15 @@ class IndexView extends Component {
     const { store, actions, navigator } = this.props;
     const globalStore = store.global.toJS();
     const mainStore = store.main.toJS();
+    console.log(globalStore);
 		return (
       <View style={styles.container}>
         <View style={styles.header}>
           <Header
-            leftContent={<Icon name="ios-arrow-back" size={30} color="#fff" />}
-            RightContent={<Icon name="md-settings" size={30} color="#fff" />}
+            leftContent={<Icon style={{textAlign: 'center'}} name="ios-arrow-back" size={30} color="#fff" />}
+            leftOnPress = { () => this._navigate(globalStore.routes.LoginView) }
+            rightContent={<Icon style={{textAlign: 'center'}} name="md-settings" size={30} color="#fff" />}
+            rightOnPress = { () => this._navigate(globalStore.routes.LoginView) }
             TitleContent={'首页'}
           />
         </View>
@@ -65,6 +69,7 @@ class IndexView extends Component {
       const recent = item.recent[0] || {};
       let log = '';
       if (recent.log) {
+        console.log(recent);
         log = recent.log[0];
       }
       return (
@@ -76,15 +81,15 @@ class IndexView extends Component {
               />
             </View>
             <View style={styles.item}>
-              <Text>{item.show}</Text>
-              <Text>{item.desc}</Text>
-              <Text>{`历史编辑: ${item.compileCount}`}</Text>
+              {item.show ? <Text>{item.show}</Text> : null}
+              {item.desc ? <Text>{item.desc}</Text> : null}
+              {item.compileCount ? <Text>{`历史编辑: ${item.compileCount}`}</Text> : null}
             </View>
           </View>
           {
             recent.commitTime || recent.log ? (
-              <View style={styles.list}>
-                <Text>{`[${recent.commitTime}] ${log}`}</Text>
+              <View style={styles.listMsg}>
+                <Text>{`[${moment(recent.commitTime).month(1).format("YY-MM-DD hh:mm")}] ${log}`}</Text>
               </View>
             ) : null
           }

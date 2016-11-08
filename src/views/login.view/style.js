@@ -19,22 +19,27 @@ export default StyleSheet.create({
   },
   iptItem: {
     flexDirection: 'row',
+    justifyContent: 'center',
     height: 50,
     marginBottom: 50,
     marginRight: 0,
     marginLeft: 0,
     borderRadius: 6,
-    overflow: 'hidden'
+    overflow: 'hidden',
+    backgroundColor: 'rgba(0,0,0,.2)'
+  },
+  icon: {
+    textAlign: 'center',
+    color: "#4F8EF7"
   },
   iptIcon: {
+    justifyContent: 'center',
     height: 50,
-    width: 40,
-    backgroundColor: 'rgba(0,0,0,.2)'
+    width: 40
   },
   ipt: {
     flex: 1,
     height: 50,
-    backgroundColor: 'rgba(0,0,0,.2)'
   },
   copyrightWrap: {
     marginLeft: 10,

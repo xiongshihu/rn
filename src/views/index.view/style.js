@@ -25,6 +25,13 @@ export default StyleSheet.create({
     backgroundColor: '#eee',
     flexDirection: 'row'
   },
+  listMsg: {
+    flex: 1,
+    padding: 10,
+    marginLeft: 10,
+    marginRight: 10,
+    backgroundColor: '#eee'
+  },
   itemImages: {
     position: 'relative',
     width: 80,
@@ -40,6 +47,8 @@ export default StyleSheet.create({
   },
   item: {
     flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
     padding: 10,
     height: 80
   }
