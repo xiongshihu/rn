@@ -19,20 +19,18 @@ export default createReducer(initialState, {
     return state.setIn(['user', 'isFetching'], true);
   },
   [AUTH.AUTH_LOGIN_FAILURE]: (state, action) => {
-    const tmpState = state.setIn(['user'], {
+    return state.mergeIn(['user'], {
       isFetching: false,
       isLogin: false,
       token: ''
     });
-    return tmpState;
   },
   [AUTH.AUTH_LOGIN_SUCCESS]: (state, action) => {
-    const tmpState = state.setIn(['user'], {
+    return state.mergeIn(['user'], {
       isFetching: false,
       isLogin: true,
       token: action.token
     });
-    return tmpState;
   },
   [AUTH.AUTH_SETNSME]: (state, action) => {
     return state.setIn(['loginName'], action.name)

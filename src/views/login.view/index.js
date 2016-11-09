@@ -96,7 +96,7 @@ class LoginView extends Component {
     })
   }
   handleLogin() {
-    const { authLogin } =this.props.actions;
+    const { authLogin } = this.props.actions;
     authLogin({
 
     });

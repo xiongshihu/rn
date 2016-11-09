@@ -16,18 +16,15 @@ export default createReducer(initialState, {
     return state.setIn(['index', 'isFetching'], true);
   },
   [MAIN.MAIN_LIST_FAILURE]: (state, action) => {
-    return state.updateIn(['index'], (data) => {
-      let tmpData = data;
-      tmpData.isFetching = false;
-      tmpData.list = [];
-      return tmpData;
-    })
+    return state.mergeIn(['index'], {
+      isFetching: false,
+      list: []
+    });
   },
   [MAIN.MAIN_LIST_SUCCESS]: (state, action) => {
-    const tmpState = state.setIn(['index'], {
+    return state.mergeIn(['index'], {
       isFetching: false,
       list: action.data.data.list
     });
-    return tmpState
   }
 });
