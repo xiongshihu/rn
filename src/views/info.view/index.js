@@ -3,6 +3,7 @@
 import React, { Component, PropTypes } from 'react';
 import { is } from 'immutable';
 import moment from 'moment';
+import Button from 'apsl-react-native-button';
 import {
   Image,
   Text,
@@ -18,7 +19,10 @@ class IndexView extends Component {
   constructor (props) {
     super(props);
     this._navigate = this._navigate.bind(this);
+    this.renderLoading = this.renderLoading.bind(this);
+    this.renderMain = this.renderMain.bind(this);
     this.renderInfo = this.renderInfo.bind(this);
+    this.renderList = this.renderList.bind(this);
   }
   shouldComponentUpdate(nextProps, nextState) {
     const thisProps = this.props || {}, thisState = this.state || {};
@@ -35,57 +39,169 @@ class IndexView extends Component {
     return false;
   }
   componentDidMount() {
-    const { store, actions } = this.props;
-
+    const { store, actions, info } = this.props;
+    actions.mainGetInfo({
+      module: info.name,
+      count: 5,
+      tab: 0,
+    });
+  }
+  componentWillUpdate(nextProps) {
+    const { store, actions } = nextProps;
+    const globalStore = store.global.toJS();
+    const authStore = store.auth.toJS();
+    if(!authStore.user.isLogin) {
+      this._navigate(globalStore.routes.LoginView)
+    }
   }
   render() {
     const { store, actions, navigator } = this.props;
     const globalStore = store.global.toJS();
     const mainStore = store.main.toJS();
-    console.log(this.props);
-		return (
+    const { isFetching, brief, list } = mainStore.info;
+    return (
       <View style={styles.container}>
         <View style={styles.header}>
           <Header
-            leftContent={<Icon style={{textAlign: 'center'}} name="ios-arrow-back" size={30} color="#fff" />}
+            leftContent={<Icon style={{textAlign: 'center'}} name="ios-arrow-back" size={25} color="#fff" />}
             leftOnPress = { () => navigator.pop()}
-            rightContent={<Icon style={{textAlign: 'center'}} name="md-settings" size={30} color="#fff" />}
-            rightOnPress = { () => this._navigate(globalStore.routes.LoginView) }
+            rightContent={<Icon style={{textAlign: 'center'}} name="md-settings" size={25} color="#fff" />}
+            rightOnPress = { () => this._navigate(globalStore.routes.SetView, 'Normal') }
             TitleContent={this.props.info.show || '祥情页'}
           />
         </View>
         <View style={styles.main}>
-          <ScrollView>
-          {this.renderInfo(this.props.info)}
-          </ScrollView>
+          {isFetching ? this.renderLoading() : this.renderMain()}
         </View>
       </View>
     );
   }
-  renderInfo(info) {
-    console.log(info);
-    if (!info) return false;
-    const logoUrl = info.logoUrl.substring(0, info.logoUrl.indexOf('?'));
+  renderLoading() {
     return (
-        <View>
-          <View style={styles.list}>
-            <View style={styles.itemImages}>
-              <Image source={{uri: `${logoUrl}?imageView2/1/w/192/h/192`}}
-                style={styles.itemLogo}
+      <Button isLoading={true} style={{
+        borderWidth: 0
+      }}
+      />
+    );
+  }
+  renderMain() {
+    const { store, actions, navigator } = this.props;
+    const globalStore = store.global.toJS();
+    const mainStore = store.main.toJS();
+    const { brief, list } = mainStore.info;
+    return (
+        <ScrollView>
+          <View style={{ flex: 1 }}>
+            {this.renderInfo(brief)}
+            <View style={{ flex: 1 }}>
+              <View style={styles.tabWrap}>
+                <View style={styles.tabItem}>
+                  <Button isLoading={false} style={{
+                    borderRadius: 3, height: 30,
+                    backgroundColor: mainStore.infoType === 0 ? '#eee' : 'transparent',
+                    paddingLeft: 10, paddingRight: 10,
+                    borderBottomWidth: 0,
+                    borderColor: '#ddd',
+                    borderWidth: 1}} textStyle={{fontSize: 12, color: '#555'}}
+                    onPress = {() => actions.mainSetInfoTab(0)}
+                  >
+                    已发布
+                  </Button>
+                </View>
+                <View style={styles.tabItem}>
+                  <Button isLoading={false} style={{ borderRadius: 3, height: 30,
+                    backgroundColor: mainStore.infoType === 1 ? '#eee' : 'transparent',
+                    paddingLeft: 10, paddingRight: 10,
+                    borderBottomWidth: 0,
+                    borderColor: '#ddd',
+                    borderWidth: 1}} textStyle={{fontSize: 12, color: '#555'}}
+                    onPress = {() => actions.mainSetInfoTab(1)}
+                  >
+                    全部
+                  </Button>
+                </View>
+              </View>
+              <View style={styles.list}>
+                {this.renderList(list)}
+              </View>
+            </View>
+          </View>
+        </ScrollView>
+    );
+  }
+  renderInfo(info) {
+    if (!info) return false;
+    return (
+        <View style={styles.infoWrap}>
+          <View style={styles.infoMain}>
+            <View style={styles.infoImages}>
+              <Image source={{uri: info.logoUrl}}
+                style={styles.infoLogo}
               />
             </View>
-            <View style={styles.item}>
-              {info.show ? <Text>{info.show}</Text> : null}
+            <View style={styles.infoDesc}>
               {info.desc ? <Text>{info.desc}</Text> : null}
               {info.compileCount ? <Text>{`历史编辑: ${info.compileCount}`}</Text> : null}
+              {info.qrUrl ? <Text>最新包外网二维码下载地址</Text> : null}
+            </View>
+          </View>
+          <View style={styles.infoBtnWrap}>
+            <View style={{marginRight: 10}}>
+              <Button isLoading={false} style={{ borderRadius: 3, height: 20, backgroundColor: '#5bc0de', paddingLeft: 10, paddingRight: 10, borderWidth: 0}} textStyle={{fontSize: 12, color: '#fff'}}>
+                聊天室
+              </Button>
+            </View>
+            <View style={{marginRight: 10}}>
+              <Button isLoading={false} style={{ borderRadius: 3, height: 20, backgroundColor: '#5bc0de', paddingLeft: 10, paddingRight: 10, borderWidth: 0}} textStyle={{fontSize: 12, color: '#fff'}}>
+                接收通知
+              </Button>
+            </View>
+            <View style={{marginRight: 10}}>
+              <Button isLoading={false} style={{ borderRadius: 3, height: 20, backgroundColor: '#5bc0de', paddingLeft: 10, paddingRight: 10, borderWidth: 0}} textStyle={{fontSize: 12, color: '#fff'}}>
+                收藏
+              </Button>
+            </View>
+            <View style={{marginRight: 10}}>
+              <Button isLoading={false} style={{ borderRadius: 3, height: 20, backgroundColor: '#5bc0de', paddingLeft: 10, paddingRight: 10, borderWidth: 0}} textStyle={{fontSize: 12, color: '#fff'}}>
+                构建
+              </Button>
             </View>
           </View>
         </View>
       );
   }
+  renderList(list) {
+    if (!list) return false;
+    return list.map((item, index) => {
+      return (
+        <View backgroundColor={index%2 === 1 ? '#e8e8e8' : '#F3F3F3'} key={`list-${index}`} style={styles.item}>
+          <View>
+            <Text>
+              # {item.commitNo} {item.commitTime} 生效
+            </Text>
+          </View>
+          <View>
+          <Text>
+            # {item.commitNo}
+            {item.application.updateTime}
+            发布
+            by {item.application.creatorName}
+          </Text>
+          </View>
+          <View>
+            {item.desc ? <Text>{item.desc}</Text> : null}
+          </View>
+          <View>
+            <Button isLoading={false} style={{ marginBottom: 0, borderRadius: 3, height: 30, backgroundColor: '#5bc0de', paddingLeft: 10, paddingRight: 10, borderWidth: 0}} textStyle={{fontSize: 12, color: '#fff'}}>
+              安装
+            </Button>
+          </View>
+        </View>
+      );
+    });
+  }
   _navigate(page, type = 'Bottom') {
     const { store, actions, navigator } = this.props;
-    console.log(page);
     this.props.navigator.push({
       render: page,
       passProps: {},

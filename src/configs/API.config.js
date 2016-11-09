@@ -11,11 +11,21 @@ export default {
   getIndex: {
     name: '首页列表',
     method: 'GET',
-    url: `${host}apollo/listModule`
+    url: `${host}apollo/listModule`,
+  },
+  getInfo: {
+    name: '祥情',
+    method: 'GET',
+    url: `${host}apollo/getModuleDetail`,
   },
   login: {
     name: '登录接口',
     method: 'GET',
-    url: `${host}apollo/listModule`
-  }
+    url: `${host}user/publicLogin`,
+  },
+  logout: {
+    name: '登出接口',
+    method: 'GET',
+    url: `${host}user/logout`,
+  },
 };

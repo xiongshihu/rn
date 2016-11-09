@@ -18,39 +18,61 @@ export default StyleSheet.create({
     flexGrow: 1,
     backgroundColor: '#fff'
   },
-  list: {
+  infoWrap: {
     flex: 1,
-    marginTop: 20,
+  },
+  infoMain: {
+    flex: 1,
+    flexDirection: 'row',
     marginLeft: 10,
     marginRight: 10,
-    backgroundColor: '#eee',
-    flexDirection: 'row'
   },
-  listMsg: {
-    flex: 1,
-    padding: 10,
-    marginLeft: 10,
-    marginRight: 10,
-    backgroundColor: '#eee'
-  },
-  itemImages: {
+  infoImages: {
     position: 'relative',
-    width: 80,
-    height: 80
+    width: 120,
+    height: 120,
   },
-  itemLogo: {
+  infoLogo: {
     position: 'absolute',
     top: 10,
     left: 10,
-    width: 60,
-    height: 60,
+    width: 100,
+    height: 100,
     borderRadius: 10,
   },
-  item: {
+  infoDesc: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'center',
     padding: 10,
-    height: 80
-  }
+    height: 100
+  },
+  infoBtnWrap: {
+    flex: 1,
+    flexDirection: 'row',
+    marginLeft: 20,
+    marginRight: 20,
+  },
+  tabWrap: {
+    flex: 1,
+    flexDirection: 'row',
+    height: 40,
+    paddingLeft: 20,
+    paddingRight: 20,
+    backgroundColor: '#fff',
+    borderTopWidth: 1,
+    borderColor: '#ddd',
+  },
+  tabItem: {
+    marginRight: 10,
+    marginTop: 10,
+  },
+  list: {
+
+  },
+  item: {
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 20,
+    paddingRight: 20,
+  },
 });

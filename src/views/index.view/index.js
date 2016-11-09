@@ -3,6 +3,7 @@
 import React, { Component, PropTypes } from 'react';
 import { is } from 'immutable';
 import moment from 'moment';
+import Button from 'apsl-react-native-button';
 import {
   Image,
   Text,
@@ -18,6 +19,7 @@ class IndexView extends Component {
   constructor (props) {
     super(props);
     this._navigate = this._navigate.bind(this);
+    this.renderLoading = this.renderLoading.bind(this);
     this.renderList = this.renderList.bind(this);
   }
   shouldComponentUpdate(nextProps, nextState) {
@@ -36,9 +38,15 @@ class IndexView extends Component {
   }
   componentDidMount() {
     const { store, actions } = this.props;
-    setTimeout(() => {
-      actions.mainGetList({});
-    }, 2000);
+    actions.mainGetList({});
+  }
+  componentWillUpdate(nextProps) {
+    const { store, actions } = nextProps;
+    const globalStore = store.global.toJS();
+    const authStore = store.auth.toJS();
+    if(!authStore.user.isLogin) {
+      this._navigate(globalStore.routes.LoginView)
+    }
   }
   render() {
     const { store, actions, navigator } = this.props;
@@ -48,17 +56,33 @@ class IndexView extends Component {
       <View style={styles.container}>
         <View style={styles.header}>
           <Header
-            rightContent={<Icon style={{textAlign: 'center'}} name="md-settings" size={30} color="#fff" />}
-            rightOnPress = { () => this._navigate(globalStore.routes.LoginView) }
-            TitleContent={'首页'}
+            leftContent={<Icon style={{textAlign: 'center'}} name="ios-menu" size={25} color="#fff" />}
+            rightContent={<Icon style={{textAlign: 'center'}} name="md-settings" size={25} color="#fff" />}
+            rightOnPress = { () => this._navigate(globalStore.routes.SetView, 'Normal') }
+            TitleContent={'持续集成系统'}
           />
         </View>
         <View style={styles.main}>
-          <ScrollView>
-          {this.renderList(mainStore.index.list)}
-          </ScrollView>
+          {mainStore.index.isFetching ? this.renderLoading() : this.renderMain()}
         </View>
       </View>
+    );
+  }
+  renderLoading() {
+    return (
+      <Button isLoading={true} style={{
+        borderWidth: 0
+      }}
+      />
+    );
+  }
+  renderMain() {
+    const { store, actions, navigator } = this.props;
+    const mainStore = store.main.toJS();
+    return (
+      <ScrollView>
+      {this.renderList(mainStore.index.list)}
+      </ScrollView>
     );
   }
   renderList(list) {

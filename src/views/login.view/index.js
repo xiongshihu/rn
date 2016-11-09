@@ -2,6 +2,7 @@
 
 import React, { Component, PropTypes } from 'react';
 import { is } from 'immutable';
+import Button from 'apsl-react-native-button';
 import {
   Text,
   View,
@@ -43,7 +44,7 @@ class LoginView extends Component {
           style={styles.backgroundImage}
         >
         <Header
-          leftContent={<Icon style={{textAlign: 'center', backgroundColor: 'transparent'}} name="ios-arrow-back" size={30} color="#ccc" />}
+          leftContent={<Icon style={{textAlign: 'center', backgroundColor: 'transparent'}} name="ios-arrow-back" size={25} color="#ccc" />}
           leftOnPress = { () => navigator.pop()}
         />
         <View style={styles.wrap}>
@@ -74,13 +75,16 @@ class LoginView extends Component {
               onChangeText={(text) => actions.authSetPwd(text)}
             />
           </View>
-          <View style={styles.iptItem}>
-            <TouchableButton
-              style={{}}
-              icon={<Icon name="ios-log-in" size={30} color="#4F8EF7" />}
-              onPress={this.handleLogin}
-              Text="登录"
-            />
+          <View>
+            <Button isLoading={authStore.user.isFetching} style={{ borderRadius: 3, height: 30,
+              backgroundColor: '#00FF7F'|| 'transparent',
+              borderBottomWidth: 0,
+              height: 50,
+              borderWidth: 0}} textStyle={{fontSize: 20, color: '#fff'}}
+              onPress = {this.handleLogin}
+            >
+              登录<Icon style={{marginLeft: 10, marginTop: 10}} name="ios-log-in" size={30} color="#fff" />
+            </Button>
           </View>
         </View>
         </Image>

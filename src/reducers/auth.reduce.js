@@ -32,6 +32,35 @@ export default createReducer(initialState, {
       token: action.token
     });
   },
+  [AUTH.AUTH_LOGOUT_REQUEST]: (state, action) => {
+    return state.setIn(['user', 'isFetching'], true);
+  },
+  [AUTH.AUTH_LOGOUT_FAILURE]: (state, action) => {
+    return state.setIn(['user', 'isFetching'], false);
+  },
+  [AUTH.AUTH_LOGOUT_SUCCESS]: (state, action) => {
+    return state.mergeIn(['user'], {
+      isFetching: false,
+      isLogin: false,
+      token: ''
+    });
+  },
+  [AUTH.AUTH_HASLOG_REQUEST]: (state, action) => {
+    return state.setIn(['user', 'isFetching'], true);
+  },
+  [AUTH.AUTH_HASLOG_FAILURE]: (state, action) => {
+    return state.setIn(['user', 'isFetching'], false);
+  },
+  [AUTH.AUTH_HASLOG_SUCCESS]: (state, action) => {
+    if(action.data.data.email) {
+      return state;
+    }
+    return state.mergeIn(['user'], {
+      isFetching: false,
+      isLogin: false,
+      token: ''
+    });
+  },
   [AUTH.AUTH_SETNSME]: (state, action) => {
     return state.setIn(['loginName'], action.name)
   },
