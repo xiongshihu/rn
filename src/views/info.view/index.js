@@ -131,7 +131,13 @@ class IndexView extends Component {
   }
   renderInfo(info) {
     const { store, actions, navigator } = this.props;
+    const globalStore = store.global.toJS();
+    const mainlStore = store.main.toJS();
+    const sub = mainlStore.sub || {};
+    const favo = mainlStore.favo || {};
     if (!info) return false;
+    const _sub = sub[`${info.name}_${info.id}`] || {};
+    const _favo = favo[`${info.name}_${info.id}`] || {};
     return (
         <View style={styles.infoWrap}>
           <View style={styles.infoMain}>
@@ -154,7 +160,7 @@ class IndexView extends Component {
               </Button>
             </View>
             <View style={{marginRight: 10}}>
-              <Button isLoading={false}
+              <Button isLoading={_sub.isFetching}
                 onPress={() => actions.mainSetSub({ mids: info.id },`${info.name}_${info.id}`, info.subscribe)}
                 style={{ borderRadius: 3, height: 20,
                   backgroundColor: info.subscribe ? '#2d6ca2' : '#5bc0de', paddingLeft: 10, paddingRight: 10, borderWidth: 0}} textStyle={{fontSize: 12, color: '#fff'}}>
@@ -162,7 +168,7 @@ class IndexView extends Component {
               </Button>
             </View>
             <View style={{marginRight: 10}}>
-            <Button isLoading={false}
+            <Button isLoading={_favo.isFetching}
               onPress={() => actions.mainSetFavo({ mids: info.id },`${info.name}_${info.id}`, info.favo)}
               style={{ borderRadius: 3, height: 20,
                 backgroundColor: info.favo ? '#2d6ca2' : '#5bc0de', paddingLeft: 10, paddingRight: 10, borderWidth: 0}} textStyle={{fontSize: 12, color: '#fff'}}>

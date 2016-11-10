@@ -53,7 +53,6 @@ class IndexView extends Component {
     const { store, actions, navigator } = this.props;
     const globalStore = store.global.toJS();
     const mainStore = store.main.toJS();
-    console.log(this.props);
 		return (
       <View style={styles.container}>
         <View style={styles.header}>

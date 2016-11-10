@@ -28,7 +28,7 @@ export default {
     method: 'GET',
     url: `${host}apollo/submitUnsubscribe`,
   },
-  setUnFavo: {
+  setFavo: {
     name: '收藏',
     method: 'GET',
     url: `${host}apollo/submitFavo`,

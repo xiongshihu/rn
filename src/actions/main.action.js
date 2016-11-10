@@ -96,11 +96,11 @@ export function mainSetSub(params, id, subscribe) {
  * @param  {[type]} t [参数]
  * @return {[type]}        [description]
  */
-export function mainSetFavo(params, id, subscribe) {
+export function mainSetFavo(params, id, favo) {
   return {
     type: MAIN.MAIN_SETFAVO_REQUEST,
-    catFetch: subscribe ? API.setUnFavo.url : API.setUnFavo.url,
-    catMethod: subscribe ? API.setUnFavo.method : API.setUnFavo.method,
+    catFetch: favo ? API.setUnFavo.url : API.setFavo.url,
+    catMethod: favo ? API.setUnFavo.method : API.setFavo.method,
     catParams: params,
     id,
     callback: (err, data, dispatch, getState) => {
