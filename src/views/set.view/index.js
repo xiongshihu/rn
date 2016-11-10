@@ -83,20 +83,22 @@ class IndexView extends Component {
     return (
       <ScrollView>
         {this.renderList(mainStore.index.list)}
-        <View>
-          <View>
-            <Text>账户信息</Text>
+        <View style={styles.userWrap}>
+          <View style={styles.TitleWrap}>
+            <Text style={styles.Title}>账户信息</Text>
           </View>
-          <View>
-            <View>
-              <Text>何潇</Text>
+          <View style={styles.userSet}>
+            <View style={styles.userItemName}>
+              <Text style={{height: 30, lineHeight: 30}}>何潇</Text>
             </View>
-            <View>
+            <View style={styles.userItemBtn}>
               <Button isLoading={false} style={{
                 borderRadius: 3, height: 30,
                 backgroundColor: '#5bc0de',
                 paddingLeft: 10, paddingRight: 10,
                 borderBottomWidth: 0,
+                alignSelf: 'center',
+                marginBottom: 0,
                 borderWidth: 0}} textStyle={{fontSize: 12, color: '#fff'}}
                 onPress = {() => actions.authLogout()}
               >
@@ -109,38 +111,50 @@ class IndexView extends Component {
     );
   }
   renderList(list) {
-    const { store } = this.props;
+    const { store, actions } = this.props;
     const globalStore = store.global.toJS();
+    const mainlStore = store.main.toJS();
+    const sub = mainlStore.sub || {};
+    console.log(sub);
     if (!list.length) return false;
-    return list.map((item, index) => {
-      const logoUrl = item.logoUrl.substring(0, item.logoUrl.indexOf('?'));
-      return (
-        <View key={`list-${index}`}>
-          <View style={styles.list}>
-            <View style={styles.itemImages}>
-              <Image source={{uri: `${logoUrl}?imageView2/1/w/192/h/192`}}
-                style={styles.itemLogo}
-              />
-            </View>
-            <View style={styles.item}>
-              {item.show ? <Text>{item.show}</Text> : null}
-            </View>
-            <View style={styles.item}>
-              <Button isLoading={false} style={{
-                borderRadius: 3, height: 30,
-                backgroundColor: '#5bc0de',
-                paddingLeft: 10, paddingRight: 10,
-                borderBottomWidth: 0,
-                borderWidth: 0}} textStyle={{fontSize: 12, color: '#fff'}}
-                onPress = {() => {}}
-              >
-                未接收
-              </Button>
-            </View>
-          </View>
-        </View>
-      );
-    });
+    return (
+      <View style={styles.listWrap}>
+        {
+          list.map((item, index) => {
+            const logoUrl = item.logoUrl.substring(0, item.logoUrl.indexOf('?'));
+            const thatItem = sub[`${item.name}_${item.id}`] || {};
+            console.log(thatItem.isFetching);
+            return (
+              <View key={`list-${index}`}>
+                <View style={styles.list}>
+                  <View style={styles.itemImages}>
+                    <Image source={{uri: `${logoUrl}?imageView2/1/w/192/h/192`}}
+                      style={styles.itemLogo}
+                    />
+                  </View>
+                  <View style={styles.item}>
+                    {item.show ? <Text>{item.show}</Text> : null}
+                  </View>
+                  <View style={styles.item}>
+                    <Button isLoading={thatItem.isFetching} style={{
+                      borderRadius: 3, height: 30,
+                      backgroundColor: item.subscribe ? '#5bc0de' : '#777',
+                      paddingLeft: 10, paddingRight: 10,
+                      borderBottomWidth: 0,
+                      marginBottom: 0,
+                      borderWidth: 0}} textStyle={{fontSize: 12, color: '#fff'}}
+                      onPress = {() => {actions.mainSetSub({ mids: item.id },`${item.name}_${item.id}`, item.subscribe)}}
+                    >
+                      {item.subscribe ? '已接收' : '未接收'}
+                    </Button>
+                  </View>
+                </View>
+              </View>
+            );
+          })
+        }
+      </View>
+    );
   }
   _navigate(page, type = 'Bottom') {
     const { store, actions, navigator } = this.props;

@@ -57,6 +57,7 @@ class IndexView extends Component {
         <View style={styles.header}>
           <Header
             leftContent={<Icon style={{textAlign: 'center'}} name="ios-menu" size={25} color="#fff" />}
+            leftOnPress = { () => this._navigate(globalStore.routes.LoginView) }
             rightContent={<Icon style={{textAlign: 'center'}} name="md-settings" size={25} color="#fff" />}
             rightOnPress = { () => this._navigate(globalStore.routes.SetView, 'Normal') }
             TitleContent={'持续集成系统'}

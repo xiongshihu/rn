@@ -39,7 +39,6 @@ class App extends Component {
     const { store, actions } = this.props;
     const globalStore = store.global.toJS();
     const authStore = store.auth.toJS();
-    console.log(Navigator.push)
     // 初始路由
     const initialRoute = {
       render: globalStore.routes.LoginView
@@ -80,8 +79,8 @@ class App extends Component {
              />);
   }
   handerDidFocus(route) {
-    // const { actions } = this.props;
-    // actions.globalRouteChange(route);
+    const { actions } = this.props;
+    actions.globalRouteChange(route);
   }
 }
 

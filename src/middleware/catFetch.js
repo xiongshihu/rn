@@ -81,10 +81,9 @@ function R_POST(url, params, token) {
 
 function createCatFetchMiddleware(extraArgument) {
   return ({ dispatch, getState }) => next => action => {
-    const { type, catFetch, catMethod = 'GET', catParams, callback } = action;
+    const { type, catFetch, catMethod = 'GET', catParams, callback, id } = action;
     if (catFetch && catMethod) {
-      console.log(type, catFetch, catMethod);
-      dispatch({ type });
+      dispatch({ type, id });
       const token = getState().auth.toJS().user.token;
       if (catMethod === 'GET') {
         return R_GET(catFetch, catParams, token)

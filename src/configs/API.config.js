@@ -18,6 +18,26 @@ export default {
     method: 'GET',
     url: `${host}apollo/getModuleDetail`,
   },
+  setSub: {
+    name: '接收',
+    method: 'GET',
+    url: `${host}apollo/submitSubscribe`,
+  },
+  setUnSub: {
+    name: '不接收',
+    method: 'GET',
+    url: `${host}apollo/submitUnsubscribe`,
+  },
+  setUnFavo: {
+    name: '收藏',
+    method: 'GET',
+    url: `${host}apollo/submitFavo`,
+  },
+  setUnFavo: {
+    name: '不收藏',
+    method: 'GET',
+    url: `${host}apollo/submitUnfavo`,
+  },
   login: {
     name: '登录接口',
     method: 'GET',

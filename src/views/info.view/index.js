@@ -44,7 +44,7 @@ class IndexView extends Component {
       module: info.name,
       count: 5,
       tab: 0,
-    });
+    }, `${info.name}_${info.id}`);
   }
   componentWillUpdate(nextProps) {
     const { store, actions } = nextProps;
@@ -55,10 +55,10 @@ class IndexView extends Component {
     }
   }
   render() {
-    const { store, actions, navigator } = this.props;
+    const { store, actions, navigator, info } = this.props;
     const globalStore = store.global.toJS();
     const mainStore = store.main.toJS();
-    const { isFetching, brief, list } = mainStore.info;
+    const { isFetching, brief, list } = mainStore.info[`${info.name}_${info.id}`] || {};
     return (
       <View style={styles.container}>
         <View style={styles.header}>
@@ -85,10 +85,10 @@ class IndexView extends Component {
     );
   }
   renderMain() {
-    const { store, actions, navigator } = this.props;
+    const { store, actions, navigator, info } = this.props;
     const globalStore = store.global.toJS();
     const mainStore = store.main.toJS();
-    const { brief, list } = mainStore.info;
+    const { brief, list } = mainStore.info[`${info.name}_${info.id}`] || {};
     return (
         <ScrollView>
           <View style={{ flex: 1 }}>
@@ -130,6 +130,7 @@ class IndexView extends Component {
     );
   }
   renderInfo(info) {
+    const { store, actions, navigator } = this.props;
     if (!info) return false;
     return (
         <View style={styles.infoWrap}>
@@ -147,18 +148,25 @@ class IndexView extends Component {
           </View>
           <View style={styles.infoBtnWrap}>
             <View style={{marginRight: 10}}>
-              <Button isLoading={false} style={{ borderRadius: 3, height: 20, backgroundColor: '#5bc0de', paddingLeft: 10, paddingRight: 10, borderWidth: 0}} textStyle={{fontSize: 12, color: '#fff'}}>
+              <Button isLoading={false} style={{ borderRadius: 3, height: 20,
+                backgroundColor: '#5bc0de', paddingLeft: 10, paddingRight: 10, borderWidth: 0}} textStyle={{fontSize: 12, color: '#fff'}}>
                 聊天室
               </Button>
             </View>
             <View style={{marginRight: 10}}>
-              <Button isLoading={false} style={{ borderRadius: 3, height: 20, backgroundColor: '#5bc0de', paddingLeft: 10, paddingRight: 10, borderWidth: 0}} textStyle={{fontSize: 12, color: '#fff'}}>
-                接收通知
+              <Button isLoading={false}
+                onPress={() => actions.mainSetSub({ mids: info.id },`${info.name}_${info.id}`, info.subscribe)}
+                style={{ borderRadius: 3, height: 20,
+                  backgroundColor: info.subscribe ? '#2d6ca2' : '#5bc0de', paddingLeft: 10, paddingRight: 10, borderWidth: 0}} textStyle={{fontSize: 12, color: '#fff'}}>
+                {info.subscribe ? '取消通知' : '接收通知' }
               </Button>
             </View>
             <View style={{marginRight: 10}}>
-              <Button isLoading={false} style={{ borderRadius: 3, height: 20, backgroundColor: '#5bc0de', paddingLeft: 10, paddingRight: 10, borderWidth: 0}} textStyle={{fontSize: 12, color: '#fff'}}>
-                收藏
+            <Button isLoading={false}
+              onPress={() => actions.mainSetFavo({ mids: info.id },`${info.name}_${info.id}`, info.favo)}
+              style={{ borderRadius: 3, height: 20,
+                backgroundColor: info.favo ? '#2d6ca2' : '#5bc0de', paddingLeft: 10, paddingRight: 10, borderWidth: 0}} textStyle={{fontSize: 12, color: '#fff'}}>
+              {info.favo ? '取消收藏' : '收藏' }
               </Button>
             </View>
             <View style={{marginRight: 10}}>
