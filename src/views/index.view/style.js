@@ -52,5 +52,40 @@ export default StyleSheet.create({
     justifyContent: 'center',
     padding: 10,
     height: 80
-  }
+  },
+  indexNav: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    zIndex: 999,
+  },
+  modal: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    zIndex: 2,
+    backgroundColor: 'rgba(0,0,0,.5)'
+  },
+  modalContent: {
+    position: 'absolute',
+    top: 0,
+    right: 100,
+    bottom: 0,
+    left: 0,
+    zIndex: 3,
+    paddingTop: 50,
+    backgroundColor: '#333',
+  },
+  navBtn: {
+    marginBottom: 0,
+    borderWidth: 0,
+    borderBottomWidth: 1,
+    borderColor: '#ccc',
+    backgroundColor: '#eee',
+    borderRadius: 0
+  },
 });

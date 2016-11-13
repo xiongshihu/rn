@@ -21,6 +21,9 @@ class IndexView extends Component {
     this._navigate = this._navigate.bind(this);
     this.renderLoading = this.renderLoading.bind(this);
     this.renderList = this.renderList.bind(this);
+    this.handleShowNav = this.handleShowNav.bind(this);
+    this.renderNav = this.renderNav.bind(this);
+    this.handleGetList = this.handleGetList.bind(this);
   }
   shouldComponentUpdate(nextProps, nextState) {
     const thisProps = this.props || {}, thisState = this.state || {};
@@ -37,8 +40,7 @@ class IndexView extends Component {
     return false;
   }
   componentDidMount() {
-    const { store, actions } = this.props;
-    actions.mainGetList({});
+    this.handleGetList(0);
   }
   componentWillUpdate(nextProps) {
     const { store, actions } = nextProps;
@@ -57,14 +59,46 @@ class IndexView extends Component {
         <View style={styles.header}>
           <Header
             leftContent={<Icon style={{textAlign: 'center'}} name="ios-menu" size={25} color="#fff" />}
-            leftOnPress = { () => this._navigate(globalStore.routes.LoginView) }
+            leftOnPress = { () => this.handleShowNav(!mainStore.showNav) }
             rightContent={<Icon style={{textAlign: 'center'}} name="md-settings" size={25} color="#fff" />}
             rightOnPress = { () => this._navigate(globalStore.routes.SetView, 'Normal') }
             TitleContent={'持续集成系统'}
           />
         </View>
+        {
+          /** 导航组件  **/
+          mainStore.showNav ? this.renderNav()  : null
+        }
         <View style={styles.main}>
-          {mainStore.index.isFetching ? this.renderLoading() : this.renderMain()}
+          {
+            /** 数据列表  **/
+            mainStore.index.isFetching ? this.renderLoading() : this.renderMain()
+          }
+        </View>
+      </View>
+    );
+  }
+  renderNav() {
+    return (
+      <View style={styles.indexNav}>
+        <View style={styles.modal}
+          onPress={ () => this.handleShowNav(false) }
+        />
+        <View style={styles.modalContent}>
+          <View style={styles.navItem}>
+            <Button style={styles.navBtn}
+              onPress={ () => this.handleGetList(0) }
+            >
+              全部
+            </Button>
+          </View>
+          <View style={styles.navItem}>
+            <Button style={styles.navBtn}
+              onPress={ () => this.handleGetList(1) }
+            >
+              收藏
+            </Button>
+          </View>
         </View>
       </View>
     );
@@ -135,6 +169,17 @@ class IndexView extends Component {
       passProps: passProps,
       type: type
     })
+  }
+  handleShowNav(navState) {
+    const { actions } = this.props;
+    actions.mainShowNav(navState);
+  }
+  handleGetList(tab = 0) {
+    const { store, actions } = this.props;
+    actions.mainGetList({
+      platform: 'ALL',
+      tab
+    });
   }
 }
 

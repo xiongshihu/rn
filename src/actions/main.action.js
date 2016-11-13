@@ -117,9 +117,26 @@ export function mainSetFavo(params, id, favo) {
   }
 }
 
+/**
+ * [mainSetInfoTab description]
+ * @param  {[type]} id [description]
+ * @return {[type]}    [description]
+ */
 export function mainSetInfoTab(id) {
   return {
     type: MAIN.MAIN_SETINFOTAB,
     id,
+  }
+}
+
+/**
+ * [mainShowNav description]
+ * @param  {[type]} navState [description]
+ * @return {[type]}          [description]
+ */
+export function mainShowNav(navState) {
+  return {
+    type: MAIN.MAIN_SHOWNAV,
+    navState,
   }
 }

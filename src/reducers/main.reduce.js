@@ -5,8 +5,10 @@ import { fromJS } from 'immutable';
 import TYPE from '../constants';
 const { MAIN } = TYPE;
 const initialState = fromJS({
+  showNav: false,
   index: {
     isFetching: false,
+    navTab: 0,
     list: []
   },
   info: {
@@ -22,6 +24,9 @@ const initialState = fromJS({
 });
 
 export default createReducer(initialState, {
+  [MAIN.MAIN_SHOWNAV]: (state, action) => {
+    return state.setIn(['showNav'], action.navState || false);
+  },
   [MAIN.MAIN_LIST_REQUEST]: (state, action) => {
     return state.setIn(['index', 'isFetching'], true);
   },
