@@ -63,7 +63,8 @@ class IndexView extends Component {
           />
         </View>
         <View style={styles.main}>
-          {mainStore.index.isFetching ? this.renderLoading() : this.renderMain()}
+          {mainStore.index.isFetching ? this.renderLoading() : null}
+          {this.renderMain()}
         </View>
       </View>
     );
@@ -81,7 +82,7 @@ class IndexView extends Component {
     const mainStore = store.main.toJS();
     return (
       <ScrollView>
-        {this.renderList(mainStore.index.list)}
+        {this.renderList(mainStore.index.allList)}
         <View style={styles.userWrap}>
           <View style={styles.TitleWrap}>
             <Text style={styles.Title}>账户信息</Text>

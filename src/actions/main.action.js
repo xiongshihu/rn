@@ -22,14 +22,14 @@ export function mainGetList(params) {
     catParams: params,
     callback: (err, data, dispatch, getState) => {
       if (err) {
-        dispatch({type: MAIN.MAIN_LIST_FAILURE, massage: err});
+        dispatch({type: MAIN.MAIN_LIST_FAILURE, massage: err, tab: params});
         dispatch(globalAlertCreate({
           title: '获取列表失败',
           massage: err + ''
         }));
         return;
       }
-      dispatch({type: MAIN.MAIN_LIST_SUCCESS, data});
+      dispatch({type: MAIN.MAIN_LIST_SUCCESS, data, tab: params});
     }
   }
 }

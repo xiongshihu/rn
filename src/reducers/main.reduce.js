@@ -8,8 +8,9 @@ const initialState = fromJS({
   showNav: false,
   index: {
     isFetching: false,
-    navTab: 0,
-    list: []
+    tab: 0,
+    allList: [],
+    likeList: [],
   },
   info: {
 
@@ -33,13 +34,24 @@ export default createReducer(initialState, {
   [MAIN.MAIN_LIST_FAILURE]: (state, action) => {
     return state.mergeIn(['index'], {
       isFetching: false,
-      list: [],
+      tab: 0,
+      allList: [],
+      likeList: [],
     });
   },
   [MAIN.MAIN_LIST_SUCCESS]: (state, action) => {
+    if (action.tab.tab === 1) {
+      return state.mergeIn(['index'], {
+        isFetching: false,
+        tab: action.tab.tab,
+        allList: [],
+        likeList: action.data.data.list,
+      });
+    }
     return state.mergeIn(['index'], {
       isFetching: false,
-      list: action.data.data.list,
+      tab: action.tab.tab || 0,
+      allList: action.data.data.list,
     });
   },
   [MAIN.MAIN_INFO_REQUEST]: (state, action) => {
@@ -88,7 +100,7 @@ export default createReducer(initialState, {
   },
   [MAIN.MAIN_SETSUB_SUCCESS]: (state, action) => {
     let thatState = state.toJS();
-    let list = thatState.index.list || [];
+    let list = thatState.index.allList || [];
     for(var i = 0; i <= list.length; i++) {
       if(list[i].id === action.params.mids) {
         list[i].subscribe = (list[i].subscribe ? 0 : 1);
@@ -119,15 +131,7 @@ export default createReducer(initialState, {
   },
   [MAIN.MAIN_SETFAVO_SUCCESS]: (state, action) => {
     let thatState = state.toJS();
-    let list = thatState.index.list || [];
     thatState.info[action.id].brief.favo = (thatState.info[action.id].brief.favo ? 0 : 1);
-    for(var i = 0; i <= list.length; i++) {
-      if(list[i].id === action.params.mids) {
-        list[i].favo = (list[i].favo ? 0 : 1);
-        break;
-      }
-    }
-    thatState.index.list = list;
     const test = fromJS(thatState);
     return test.mergeIn(['favo'], {
       [action.id]: {

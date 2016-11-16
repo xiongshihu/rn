@@ -4,13 +4,16 @@ import React, { Component, PropTypes } from 'react';
 import { is } from 'immutable';
 import moment from 'moment';
 import Button from 'apsl-react-native-button';
+import Dimensions from 'Dimensions';
 import {
   Image,
   Text,
   View,
   TextInput,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  Animated,
+  Easing,
 } from 'react-native';
 import styles from './style';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -23,7 +26,13 @@ class IndexView extends Component {
     this.renderList = this.renderList.bind(this);
     this.handleShowNav = this.handleShowNav.bind(this);
     this.renderNav = this.renderNav.bind(this);
+    this.renderMain = this.renderMain.bind(this);
     this.handleGetList = this.handleGetList.bind(this);
+    this.handleNav = this.handleNav.bind(this);
+    const width = Dimensions.get('window').width;
+    this.state = {
+      navFadeIn: new Animated.Value(- (width - 100)),
+    };
   }
   shouldComponentUpdate(nextProps, nextState) {
     const thisProps = this.props || {}, thisState = this.state || {};
@@ -46,59 +55,113 @@ class IndexView extends Component {
     const { store, actions } = nextProps;
     const globalStore = store.global.toJS();
     const authStore = store.auth.toJS();
-    if(!authStore.user.isLogin) {
+    const mainStore = store.main.toJS();
+    const width = Dimensions.get('window').width;
+    if (!authStore.user.isLogin) {
       this._navigate(globalStore.routes.LoginView)
     }
+    this.handleNav(mainStore.showNav);
   }
   render() {
     const { store, actions, navigator } = this.props;
     const globalStore = store.global.toJS();
     const mainStore = store.main.toJS();
+    const width = Dimensions.get('window').width;
+    const {
+      navFadeIn,
+      mainFadeIn,
+    } = this.state;
 		return (
-      <View style={styles.container}>
+      <Animated.View
+        style={[styles.mainWrap, {
+          width: width * 2 - 100,
+          marginLeft: this.state.navFadeIn,
+          backgroundColor: '#000',
+        }]}
+      >
+        {
+          /** 渲染导航组件 **/
+          this.renderNav()
+        }
+        {
+          /** 渲染主页 **/
+          this.renderMain()
+        }
+      </Animated.View>
+    );
+  }
+  renderNav() {
+    const width = Dimensions.get('window').width;
+    return (
+        <View
+          style={[styles.indexNav,
+            {
+              width: width - 100
+            }
+          ]}
+        >
+          <View style={styles.modalContent}>
+            <ScrollView>
+              <View style={styles.navItem}>
+                <Button style={styles.navBtn}
+                  onPress={ () => this.handleGetList(0) }
+                >
+                  全部
+                </Button>
+              </View>
+              <View style={styles.navItem}>
+                <Button style={styles.navBtn}
+                  onPress={ () => this.handleGetList(1) }
+                >
+                  收藏
+                </Button>
+              </View>
+            </ScrollView>
+          </View>
+        </View>
+    );
+  }
+  renderMain() {
+    const { store, actions, navigator } = this.props;
+    const globalStore = store.global.toJS();
+    const mainStore = store.main.toJS();
+    const width = Dimensions.get('window').width;
+    const list = mainStore.index.tab === 1 ?
+                  mainStore.index.likeList :
+                  mainStore.index.allList;
+    return (
+      <View
+        style={[styles.mainContainer, {
+          width,
+          left: width - 100
+        }]}
+      >
+        {
+          mainStore.showNav ? (
+            <TouchableOpacity
+              style = {styles.modal}
+              activeOpacity = {1}
+              onPress = { () => this.handleShowNav(false) }
+            />
+          ) : null
+        }
         <View style={styles.header}>
           <Header
             leftContent={<Icon style={{textAlign: 'center'}} name="ios-menu" size={25} color="#fff" />}
             leftOnPress = { () => this.handleShowNav(!mainStore.showNav) }
             rightContent={<Icon style={{textAlign: 'center'}} name="md-settings" size={25} color="#fff" />}
             rightOnPress = { () => this._navigate(globalStore.routes.SetView, 'Normal') }
-            TitleContent={'持续集成系统'}
+            TitleContent={mainStore.index.tab === 1 ? '持续集成系统-收藏' : '持续集成系统'}
           />
         </View>
-        {
-          /** 导航组件  **/
-          mainStore.showNav ? this.renderNav()  : null
-        }
         <View style={styles.main}>
           {
             /** 数据列表  **/
-            mainStore.index.isFetching ? this.renderLoading() : this.renderMain()
+            mainStore.index.isFetching ? this.renderLoading() : null
           }
-        </View>
-      </View>
-    );
-  }
-  renderNav() {
-    return (
-      <View style={styles.indexNav}>
-        <View style={styles.modal}
-          onPress={ () => this.handleShowNav(false) }
-        />
-        <View style={styles.modalContent}>
-          <View style={styles.navItem}>
-            <Button style={styles.navBtn}
-              onPress={ () => this.handleGetList(0) }
-            >
-              全部
-            </Button>
-          </View>
-          <View style={styles.navItem}>
-            <Button style={styles.navBtn}
-              onPress={ () => this.handleGetList(1) }
-            >
-              收藏
-            </Button>
-          </View>
+          <ScrollView>
+            {this.renderList(list)}
+          </ScrollView>
         </View>
       </View>
     );
@@ -109,15 +172,6 @@ class IndexView extends Component {
         borderWidth: 0
       }}
       />
-    );
-  }
-  renderMain() {
-    const { store, actions, navigator } = this.props;
-    const mainStore = store.main.toJS();
-    return (
-      <ScrollView>
-      {this.renderList(mainStore.index.list)}
-      </ScrollView>
     );
   }
   renderList(list) {
@@ -180,6 +234,18 @@ class IndexView extends Component {
       platform: 'ALL',
       tab
     });
+    this.handleShowNav(false);
+    this.setState({
+      fadeIn: new Animated.Value(-200)
+    });
+  }
+  handleNav(has) {
+    const width = Dimensions.get('window').width;
+    Animated.timing(this.state.navFadeIn, {
+      toValue: has ? 0 :  - (width - 100), // 目标值
+      duration: 500, // 动画时间
+      easing: Easing.linear // 缓动函数
+    }).start();
   }
 }
 

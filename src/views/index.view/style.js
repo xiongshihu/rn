@@ -5,13 +5,16 @@ import {
 } from 'react-native';
 
 export default StyleSheet.create({
-  container: {
-    flex: 1
+  mainWrap: {
+    flex: 1,
+  },
+  mainContainer: {
+    flex: 1,
   },
   header: {
     margin: 0,
     height: 60,
-    backgroundColor: '#b72712'
+    backgroundColor: '#6de497'
   },
   main: {
     flex: 1,
@@ -70,10 +73,26 @@ export default StyleSheet.create({
     zIndex: 2,
     backgroundColor: 'rgba(0,0,0,.5)'
   },
+  clearNav: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+  },
+  modalWrap: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    zIndex: 3,
+    paddingTop: 50,
+  },
   modalContent: {
     position: 'absolute',
     top: 0,
-    right: 100,
+    right: 0,
     bottom: 0,
     left: 0,
     zIndex: 3,

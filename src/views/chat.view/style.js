@@ -11,7 +11,7 @@ export default StyleSheet.create({
   header: {
     margin: 0,
     height: 60,
-    backgroundColor: '#b72712'
+    backgroundColor: '#6de497'
   },
   main: {
     flex: 1,

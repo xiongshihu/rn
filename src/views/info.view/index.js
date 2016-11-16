@@ -10,7 +10,8 @@ import {
   View,
   TextInput,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  Linking
 } from 'react-native';
 import styles from './style';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -23,6 +24,11 @@ class IndexView extends Component {
     this.renderMain = this.renderMain.bind(this);
     this.renderInfo = this.renderInfo.bind(this);
     this.renderList = this.renderList.bind(this);
+    this.openUrl = this.openUrl.bind(this);
+    this.handleShowQl = this.handleShowQl.bind(this);
+    this.state = {
+      show: false
+    };
   }
   shouldComponentUpdate(nextProps, nextState) {
     const thisProps = this.props || {}, thisState = this.state || {};
@@ -126,6 +132,20 @@ class IndexView extends Component {
               </View>
             </View>
           </View>
+          {
+            this.state.show ? (
+              <View style={styles.qlWrap}>
+                <TouchableOpacity
+                  style = {[styles.qlWrap, styles.qlBg]}
+                  activeOpacity = {1}
+                  onPress = { () => this.handleShowQl(false) }
+                />
+                <Image source={{uri: brief ?  brief.qrUrl : ' '}}
+                  style={styles.qlImages}
+                />
+              </View>
+            ) : null
+          }
         </ScrollView>
     );
   }
@@ -149,7 +169,15 @@ class IndexView extends Component {
             <View style={styles.infoDesc}>
               {info.desc ? <Text>{info.desc}</Text> : null}
               {info.compileCount ? <Text>{`历史编辑: ${info.compileCount}`}</Text> : null}
-              {info.qrUrl ? <Text>最新包外网二维码下载地址</Text> : null}
+              {info.qrUrl ? (
+                <Button
+                  onPress={() => this.handleShowQl(true)}
+                  isLoading={false} style={{
+                    marginTop: 10,
+                    marginBottom: 0, borderRadius: 3, height: 30, backgroundColor: '#5bc0de', paddingLeft: 10, paddingRight: 10, borderWidth: 0}} textStyle={{fontSize: 12, color: '#fff'}}>
+                  最新包外网二维码下载地址
+                </Button>
+              ) : null}
             </View>
           </View>
           <View style={styles.infoBtnWrap}>
@@ -206,7 +234,9 @@ class IndexView extends Component {
             {item.desc ? <Text>{item.desc}</Text> : null}
           </View>
           <View>
-            <Button isLoading={false} style={{ marginBottom: 0, borderRadius: 3, height: 30, backgroundColor: '#5bc0de', paddingLeft: 10, paddingRight: 10, borderWidth: 0}} textStyle={{fontSize: 12, color: '#fff'}}>
+            <Button
+              onPress={() => this.openUrl(item.setupUrl)}
+              isLoading={false} style={{ marginBottom: 0, borderRadius: 3, height: 30, backgroundColor: '#5bc0de', paddingLeft: 10, paddingRight: 10, borderWidth: 0}} textStyle={{fontSize: 12, color: '#fff'}}>
               安装
             </Button>
           </View>
@@ -221,6 +251,14 @@ class IndexView extends Component {
       passProps: {},
       type: type
     })
+  }
+  openUrl(url) {
+    Linking.openURL(url);
+  }
+  handleShowQl(has) {
+    this.setState({
+      show: !!has
+    });
   }
 }
 

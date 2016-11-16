@@ -11,7 +11,7 @@ export default StyleSheet.create({
   header: {
     margin: 0,
     height: 60,
-    backgroundColor: '#b72712'
+    backgroundColor: '#6de497'
   },
   main: {
     flex: 1,
@@ -75,4 +75,29 @@ export default StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 20,
   },
+  qlWrap: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    margin: 0,
+    zIndex: 999,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+  qlBg: {
+
+  },
+  qlImages: {
+    width: 240,
+    height: 240,
+    zIndex: 1000,
+    margin: 0,
+    backgroundColor: '#fefefe',
+    borderWidth: 2,
+    borderColor: '#ccc',
+  }
 });
